@@ -1,0 +1,15 @@
+{
+  "name": "kx-spec-plugins",
+  "description": "KX 전용 플러그인 마켓플레이스 - 스펙 기반 개발 워크플로우, 에이전트 시스템, 코드 리뷰, 디버깅, 테스팅",
+  "owner": {
+    "name": "vxggangxv"
+  },
+  "plugins": [
+    {
+      "name": "dev-plugin",
+      "description": "KX 전용 플러그인 - 스펙 기반 개발 워크플로우, 에이전트 시스템, 코드 리뷰, 디버깅, 테스팅",
+      "source": "./plugins/dev-plugin",
+      "category": "development"
+    }
+  ]
+}
