@@ -8,6 +8,10 @@ description: 스펙 문서 작성/갱신 후 개발 에이전트로 구현까지
 세션 컨텍스트를 기반으로 스펙 문서를 작성/갱신하고, 바로 개발 에이전트로 구현까지 진행한다.
 **질문 없이 즉시 실행한다.**
 
+> **🔴 핵심 원칙: 이 워크플로우는 Phase 0 → 1 → 2 → 3 → 4 → 5 를 끝까지 실행해야 완료된다.**
+> **개발(Phase 2) 완료는 중간 단계일 뿐이다. 서브에이전트가 반환되면 반드시 Phase 3(스펙 갱신) → Phase 4(코드 리뷰) → Phase 5(테스트)를 이어서 실행한다.**
+> **어떤 Phase에서든 "여기서 끝"이라고 판단하지 않는다. 완료 보고가 출력될 때까지 멈추지 않는다.**
+
 **워크플로우 참조**: `~/.claude/skills/spec/references/workflow.md`
 **리뷰 체크리스트**: `~/.claude/skills/spec/references/code-review-checklist.md`
 
@@ -142,21 +146,23 @@ created: YYYY-MM-DD
    - 작업 대상 파일 목록
    - 세션에서 논의된 기술적 결정사항
 
----
+> **⚠️ CRITICAL: 개발 에이전트가 완료되면 여기서 멈추지 않는다. 반드시 Phase 3 → 4 → 5를 순서대로 이어서 실행한다. 개발 완료는 워크플로우의 중간 단계일 뿐이다.**
 
 ---
 
 ## Phase 3: 스펙 문서 갱신 (spec-write)
 
-개발 에이전트 작업 완료 후, 변경 내용을 스펙 문서에 반영한다.
+개발 에이전트 작업 완료 후, **즉시** 변경 내용을 스펙 문서에 반영한다.
 
 1. 변경된 파일 목록, 완료된 작업 반영
 2. context.md 상태 업데이트
-3. 갱신 완료 후 Phase 4로 이어짐
+3. **갱신 완료 후 멈추지 않고 Phase 4로 즉시 이어진다**
 
 ---
 
 ## Phase 4: 코드 리뷰 (spec-code-review)
+
+> **⚠️ Phase 3 완료 후 반드시 실행한다. 건너뛰지 않는다.**
 
 code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 
@@ -164,12 +170,14 @@ code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 2. `~/.claude/skills/spec/references/code-review-checklist.md` 읽기
 3. Agent 도구로 code-reviewer 에이전트 spawn
 4. 리뷰 결과 판정:
-   - **blocker 0개** → Phase 5로 진행
+   - **blocker 0개** → **즉시 Phase 5로 진행**
    - **blocker 1개+** → 개선 사이클 진입 (Phase 6)
 
 ---
 
 ## Phase 5: 테스트 실행 (spec-testing)
+
+> **⚠️ Phase 4 완료 후 반드시 실행한다. 건너뛰지 않는다.**
 
 1. `plan.md`에서 테스트 시나리오 확인
 2. 작업 영역에 맞는 테스터 에이전트 실행:
