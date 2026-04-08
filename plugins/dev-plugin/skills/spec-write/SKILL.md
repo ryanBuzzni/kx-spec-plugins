@@ -7,7 +7,8 @@ description: 현재 세션에서 조사/논의한 내용을 기반으로 스펙 
 
 현재 세션에서 조사하고 논의한 내용을 기반으로 스펙 문서를 작성한다.
 
-**워크플로우 참조**: `~/.claude/skills/spec/references/workflow.md`
+> **🔵 필수 참조: 실행 전에 반드시 읽고 전체 워크플로우 흐름을 숙지한다.**
+> - `~/.claude/skills/spec/references/workflow.md` — 전체 워크플로우 흐름, 자가 평가 사이클, 완료 조건
 
 ## 1. 기능명 및 작업 영역 확인
 

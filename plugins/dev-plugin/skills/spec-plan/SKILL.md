@@ -7,7 +7,8 @@ description: 사용자의 작업 요청을 분석하고, 불명확한 부분은 
 
 사용자의 작업 요청을 분석하고, 불명확한 부분을 질문으로 확인한 후 구현 계획을 수립한다.
 
-**워크플로우 참조**: `~/.claude/skills/spec/references/workflow.md`
+> **🔵 필수 참조: 실행 전에 반드시 읽고 전체 워크플로우 흐름을 숙지한다.**
+> - `~/.claude/skills/spec/references/workflow.md` — 전체 워크플로우 흐름, 자가 평가 사이클, 완료 조건
 
 ---
 

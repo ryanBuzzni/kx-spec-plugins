@@ -12,8 +12,9 @@ description: 스펙 문서 작성/갱신 후 개발 에이전트로 구현까지
 > **개발(Phase 2) 완료는 중간 단계일 뿐이다. 서브에이전트가 반환되면 반드시 Phase 3(스펙 갱신) → Phase 4(코드 리뷰) → Phase 5(테스트)를 이어서 실행한다.**
 > **어떤 Phase에서든 "여기서 끝"이라고 판단하지 않는다. 완료 보고가 출력될 때까지 멈추지 않는다.**
 
-**워크플로우 참조**: `~/.claude/skills/spec/references/workflow.md`
-**리뷰 체크리스트**: `~/.claude/skills/spec/references/code-review-checklist.md`
+> **🔵 필수 참조: 실행 전에 반드시 아래 두 파일을 읽고 전체 워크플로우 흐름과 리뷰 기준을 숙지한다.**
+> - `~/.claude/skills/spec/references/workflow.md` — 전체 워크플로우 흐름, 자가 평가 사이클, 완료 조건
+> - `~/.claude/skills/spec/references/code-review-checklist.md` — 코드 리뷰 판정 기준
 
 기능명: $ARGUMENTS
 
