@@ -67,6 +67,11 @@ created: YYYY-MM-DD
 
 ## Implementation Notes
 - [세션에서 발견한 특이사항]
+
+## Test Plan
+- [ ] [Acceptance Criteria 기반 테스트 시나리오 1]
+- [ ] [Acceptance Criteria 기반 테스트 시나리오 2]
+- [ ] [엣지 케이스 / 예외 상황 테스트]
 ```
 
 ### plan.md
