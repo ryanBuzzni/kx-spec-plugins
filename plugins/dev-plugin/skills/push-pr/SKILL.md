@@ -30,7 +30,7 @@ disable-model-invocation: true
 `$ARGUMENTS`에 `review` 키워드가 포함되어 있는지 확인한다.
 
 - **포함 안 됨**: 이 단계를 건너뛰고 바로 다음 단계로 진행
-- **포함됨**: 커밋/푸시 **전에** `/spec-code-review` 스킬을 실행한다
+- **포함됨**: 커밋/푸시 **전에** `/kx:spec-code-review` 스킬을 실행한다
 
 `$ARGUMENTS`에서 `review` 키워드를 제거한 나머지를 커밋 메시지로 사용한다.
 

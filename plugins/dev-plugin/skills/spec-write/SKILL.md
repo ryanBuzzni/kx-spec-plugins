@@ -209,10 +209,10 @@ created: YYYY-MM-DD
 
 ## 6. 다음 단계 자동 연결
 
-- **spec-plan에서 호출된 경우** (`--skip-confirm` 플래그): 스펙 문서 생성 완료 후 **즉시 spec-execute 스킬을 실행**한다. 멈추지 않는다.
+- **spec-plan에서 호출된 경우** (`--skip-confirm` 플래그): 스펙 문서 생성 완료 후 **즉시 `/kx:spec-execute` 스킬을 실행**한다. 멈추지 않는다.
 - **단독 실행인 경우**: 다음 안내를 출력하고 종료한다.
   ```
   다음 단계:
-    - spec-execute → 개발 실행
+    - /kx:spec-execute → 개발 실행
     - testing [영역] → 테스트 실행
   ```
