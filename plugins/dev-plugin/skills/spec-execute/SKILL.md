@@ -1,15 +1,15 @@
 ---
 name: spec-execute
-description: 스펙 문서 작성/갱신 후 개발 에이전트로 구현까지 자동 진행. "스펙 실행", "spec execute", "스펙 작성하고 개발", "스펙문서 갱신", "스펙 갱신", "spec 갱신" 등으로 트리거. /spec-execute로도 호출 가능.
+description: 스펙 문서 기반으로 개발→리뷰→테스트 전체 워크플로우 실행. "스펙 실행", "spec execute", "스펙 작성하고 개발", "스펙문서 갱신", "스펙 갱신", "spec 갱신" 등으로 트리거. /spec-execute로도 호출 가능.
 ---
 
-# Spec → Execute 워크플로우
+# Spec Execute 워크플로우
 
-세션 컨텍스트를 기반으로 스펙 문서를 작성/갱신하고, 바로 개발 에이전트로 구현까지 진행한다.
+스펙 문서(spec.md, plan.md, context.md)를 기반으로 개발 → 리뷰 → 테스트를 실행한다.
 **질문 없이 즉시 실행한다.**
 
-> **🔴 핵심 원칙: 이 워크플로우는 Phase 0 → 1 → 2 → 3 → 4 → 5 를 끝까지 실행해야 완료된다.**
-> **개발(Phase 2) 완료는 중간 단계일 뿐이다. 서브에이전트가 반환되면 반드시 Phase 3(스펙 갱신) → Phase 4(코드 리뷰) → Phase 5(테스트)를 이어서 실행한다.**
+> **🔴 핵심 원칙: 이 워크플로우는 Phase 1 → 2 → 3 → 4 를 끝까지 실행해야 완료된다.**
+> **개발(Phase 1) 완료는 중간 단계일 뿐이다. 서브에이전트가 반환되면 반드시 Phase 2(스펙 갱신) → Phase 3(코드 리뷰) → Phase 4(테스트)를 이어서 실행한다.**
 > **어떤 Phase에서든 "여기서 끝"이라고 판단하지 않는다. 완료 보고가 출력될 때까지 멈추지 않는다.**
 
 > **🔵 필수 참조: 실행 전에 반드시 아래 두 파일을 읽고 전체 워크플로우 흐름과 리뷰 기준을 숙지한다.**
@@ -20,123 +20,19 @@ description: 스펙 문서 작성/갱신 후 개발 에이전트로 구현까지
 
 ---
 
-## Phase 0: 분기 판단
+## Phase 0: 스펙 문서 확인
 
 1. `$ARGUMENTS`에서 기능명 추출. 비어있으면 세션 컨텍스트에서 추론.
 2. `specs/` 하위에서 기능명과 일치하는 폴더 탐색
-   - **폴더가 없는 경우** → Phase 1A (신규 생성)
-   - **폴더가 있는 경우** → Phase 1B (갱신)
-3. "갱신", "업데이트", "update" 키워드가 포함된 경우 → 기존 폴더를 찾아 Phase 1B 강제 진행
+3. **스펙 문서(spec.md, plan.md)가 존재하는지 확인**
+   - **존재** → `spec.md`, `plan.md` 읽고 Phase 1로 진행
+   - **미존재** → spec-write 스킬을 먼저 실행하여 스펙 문서 생성 (`--skip-confirm` 플래그 전달) 후 Phase 1로 진행
 
 ---
 
-## Phase 1A: 스펙 신규 생성
+## Phase 1: 개발 실행
 
-1. 폴더명: `YYYYMMDD-기능명`
-2. `specs/codebase/index.md`를 읽어 관련 feature 파악
-3. 세션에서 논의된 내용(요구사항, 기술 결정, 제약사항, 변경 파일)을 수집
-4. 다음 세 파일을 즉시 생성 (확인 없이):
-
-### spec.md
-```markdown
----
-name: [기능명]
-related_features: [관련 feature 목록]
-status: planned
-created: YYYY-MM-DD
----
-
-# [기능명] Specification
-
-## User Story
-- As a [사용자 유형]
-- I want [원하는 기능]
-- So that [얻고자 하는 가치]
-
-## Acceptance Criteria
-- [ ] [세션에서 논의된 기준 1]
-- [ ] [세션에서 논의된 기준 2]
-
-## Technical Constraints
-- [사용 기술 스택]
-- [제약사항]
-
-## Data Structure / API
-- [논의된 데이터 구조]
-- [API 엔드포인트]
-
-## Implementation Notes
-- [세션에서 발견한 특이사항]
-
-## Test Plan
-- [ ] [Acceptance Criteria 기반 테스트 시나리오 1]
-- [ ] [Acceptance Criteria 기반 테스트 시나리오 2]
-- [ ] [엣지 케이스 / 예외 상황 테스트]
-```
-
-### plan.md
-```markdown
-# [기능명] Implementation Plan
-
-## Overview
-[한 줄 요약]
-
-## Tasks
-1. [ ] [작업 1] - [대상 파일/모듈]
-2. [ ] [작업 2] - [대상 파일/모듈]
-3. [ ] [작업 3] - [대상 파일/모듈]
-
-## Technical Approach
-- [선택된 방식과 이유]
-
-## Dependencies
-- [관련 feature/모듈]
-
-## Estimated Impact
-- [수정되는 파일/모듈]
-- [주의할 점]
-```
-
-### context.md
-```markdown
-# [기능명] Context
-
-## Current Status
-- Phase: Planning
-- Last Updated: YYYY-MM-DD
-
-## Summary
-- [세션에서 수행한 작업 요약]
-
-## Files Changed
-- (아직 없음)
-
-## Session History
-- YYYY-MM-DD: 스펙 문서 생성 via spec-execute
-```
-
----
-
-## Phase 1B: 스펙 갱신
-
-기존 `specs/[폴더명]/` 내의 **spec.md, plan.md, context.md** 세 파일을 모두 읽고, 세션에서 새로 논의/변경된 내용을 반영하여 갱신한다.
-
-1. `specs/[폴더명]/spec.md`, `plan.md`, `context.md` 순서대로 읽기
-2. 세션에서 변경된 내용 수집:
-   - 새로운 요구사항, 수정된 acceptance criteria
-   - 변경된 기술 결정, 추가된 제약사항
-   - 완료된 작업, 새로 발견된 작업
-   - 변경된 파일 목록 (git diff 참조)
-3. **세 파일 모두 갱신**:
-   - `spec.md`: 요구사항, acceptance criteria, 기술 제약 업데이트. status 변경 (planned → in_progress → completed)
-   - `plan.md`: 완료된 작업 체크, 새 작업 추가, 접근 방식 변경 반영
-   - `context.md`: Current Status 업데이트, Files Changed 추가, Session History에 갱신 이력 추가
-
----
-
-## Phase 2: 개발 실행
-
-스펙 문서 생성/갱신 즉시 개발 에이전트를 실행한다.
+스펙 문서를 기반으로 즉시 개발 에이전트를 실행한다.
 
 1. `spec.md`와 `plan.md`를 기반으로 작업 영역 자동 판별
    - 백엔드 → `backend-dev`
@@ -152,23 +48,23 @@ created: YYYY-MM-DD
    - 작업 대상 파일 목록
    - 세션에서 논의된 기술적 결정사항
 
-> **⚠️ CRITICAL: 개발 에이전트가 완료되면 여기서 멈추지 않는다. 반드시 Phase 3 → 4 → 5를 순서대로 이어서 실행한다. 개발 완료는 워크플로우의 중간 단계일 뿐이다.**
+> **⚠️ CRITICAL: 개발 에이전트가 완료되면 여기서 멈추지 않는다. 반드시 Phase 2 → 3 → 4를 순서대로 이어서 실행한다. 개발 완료는 워크플로우의 중간 단계일 뿐이다.**
 
 ---
 
-## Phase 3: 스펙 문서 갱신 (spec-write)
+## Phase 2: 스펙 문서 갱신 (spec-write)
 
 개발 에이전트 작업 완료 후, **즉시** 변경 내용을 스펙 문서에 반영한다.
 
 1. 변경된 파일 목록, 완료된 작업 반영
 2. context.md 상태 업데이트
-3. **갱신 완료 후 멈추지 않고 Phase 4로 즉시 이어진다**
+3. **갱신 완료 후 멈추지 않고 Phase 3으로 즉시 이어진다**
 
 ---
 
-## Phase 4: 코드 리뷰 (spec-code-review)
+## Phase 3: 코드 리뷰 (spec-code-review)
 
-> **⚠️ Phase 3 완료 후 반드시 실행한다. 건너뛰지 않는다.**
+> **⚠️ Phase 2 완료 후 반드시 실행한다. 건너뛰지 않는다.**
 
 code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 
@@ -176,28 +72,28 @@ code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 2. `~/.claude/skills/spec/references/code-review-checklist.md` 읽기
 3. Agent 도구로 code-reviewer 에이전트 spawn
 4. 리뷰 결과 판정:
-   - **blocker 0개** → **즉시 Phase 5로 진행**
-   - **blocker 1개+** → 개선 사이클 진입 (Phase 6)
+   - **blocker 0개** → **즉시 Phase 4로 진행**
+   - **blocker 1개+** → 개선 사이클 진입 (Phase 5)
 
 ---
 
-## Phase 5: 테스트 실행 (spec-testing)
+## Phase 4: 테스트 실행 (spec-testing)
 
-> **⚠️ Phase 4 완료 후 반드시 실행한다. 건너뛰지 않는다.**
+> **⚠️ Phase 3 완료 후 반드시 실행한다. 건너뛰지 않는다.**
 
-1. `plan.md`에서 테스트 시나리오 확인
+1. `spec.md`의 Test Plan에서 테스트 시나리오 확인
 2. 작업 영역에 맞는 테스터 에이전트 실행:
    - 백엔드 → `spec-testing back`
    - 웹 프론트 → `spec-testing web`
    - 앱 프론트 → `spec-testing app`
-3. plan.md의 테스트 시나리오가 있으면 시나리오 기반으로 전달
+3. Test Plan의 테스트 시나리오를 기반으로 전달
 4. 테스트 결과 판정:
    - **전체 통과** → 완료 보고
-   - **실패 존재** → 개선 사이클 진입 (Phase 6)
+   - **실패 존재** → 개선 사이클 진입 (Phase 5)
 
 ---
 
-## Phase 6: 자가 평가 및 개선 사이클
+## Phase 5: 자가 평가 및 개선 사이클
 
 코드 리뷰 또는 테스트에서 문제가 발견되면 자동으로 개선 사이클에 진입한다.
 상세 규칙은 `~/.claude/skills/spec/references/workflow.md`를 따른다.
@@ -206,7 +102,7 @@ code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 
 ```
 [문제 발견] → [원인 파악] → [수정 (개발 에이전트)]
-     → [spec-write] → [spec-code-review] → [spec-testing]
+     → [스펙 갱신] → [코드 리뷰] → [테스트]
      → [통과?] → Yes → 완료
         ↓ No
      [재진입] (최대 3회)
@@ -224,21 +120,19 @@ code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 ```
 /spec-execute [기능명]
      ↓
-[Phase 0] 폴더 존재 확인 → 신규 생성 or 갱신
+[Phase 0] 스펙 문서 존재 확인 → 없으면 spec-write 먼저 실행
      ↓
-[Phase 1/1B] spec.md + plan.md + context.md 생성/갱신
+[Phase 1] 작업 영역 판별 → 개발 에이전트 실행
      ↓
-[Phase 2] 작업 영역 판별 → 개발 에이전트 실행
+[Phase 2] 스펙 문서 갱신
      ↓
-[Phase 3] spec-write → 스펙 문서 갱신
+[Phase 3] 코드 리뷰
      ↓
-[Phase 4] spec-code-review → 코드 리뷰
-     ↓
-[Phase 5] spec-testing → 테스트 실행
+[Phase 4] 테스트 실행
      ↓
 [통과?] → Yes → 완료 보고
    ↓ No
-[Phase 6] 개선 사이클 → Phase 3으로 재진입 (최대 3회)
+[Phase 5] 개선 사이클 → Phase 2로 재진입 (최대 3회)
 ```
 
 ## 완료 보고
