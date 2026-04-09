@@ -10,6 +10,8 @@ disable-model-invocation: true
 
 현재 브랜치의 변경사항을 커밋, 푸시하고 PR을 생성합니다.
 
+> **⚠️ CRITICAL: 모든 git/gh 명령은 반드시 현재 작업 디렉토리(pwd)에서 실행한다. 절대 `cd`로 다른 디렉토리로 이동하지 말 것.** worktree 환경에서 메인 repo로 이동하면 의도하지 않은 브랜치/경로에서 작업될 수 있음.
+
 인수: $ARGUMENTS
 
 ## 수행 절차

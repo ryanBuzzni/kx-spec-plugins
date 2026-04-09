@@ -10,6 +10,8 @@ disable-model-invocation: true
 `$ARGUMENTS`를 파싱하여 GitHub PR을 생성하고, 옵션에 따라 머지/삭제까지 진행한다.
 **질문 없이 즉시 실행한다.**
 
+> **⚠️ CRITICAL: 모든 git/gh 명령은 반드시 현재 작업 디렉토리(pwd)에서 실행한다. 절대 `cd`로 다른 디렉토리로 이동하지 말 것.** worktree 환경에서 메인 repo로 이동하면 의도하지 않은 브랜치/경로에서 작업될 수 있음.
+
 ---
 
 ## 인자 파싱
