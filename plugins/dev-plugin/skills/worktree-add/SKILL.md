@@ -43,15 +43,19 @@ name: worktree-add
 - 이미 해당 브랜치가 존재하면 `-b` 플래그 없이 실행합니다: `git worktree add <REPO_ROOT>/.worktree/<브랜치명> <브랜치명>`
 - 이미 해당 worktree가 존재하면 사용자에게 알립니다.
 
-### 6. 결과 보고
-완료 후 다음 정보를 출력합니다. `cd` 명령은 실행하지 말고 사용자가 직접 복사해서 실행할 수 있도록 출력만 합니다:
+### 6. 워크트리로 이동
+생성된 워크트리 디렉토리로 이동합니다:
+```bash
+cd <REPO_ROOT>/.worktree/<브랜치명>
+```
+
+### 7. 결과 보고
+완료 후 다음 정보를 출력합니다:
 
 ```
 Worktree 생성 완료
   브랜치: <브랜치명>
   경로: <REPO_ROOT>/.worktree/<브랜치명>
+  현재 위치: <REPO_ROOT>/.worktree/<브랜치명>
   현재 worktree 목록: (git worktree list 결과)
-
-이동하려면 아래 명령어를 실행하세요:
-  cd <REPO_ROOT>/.worktree/<브랜치명>
 ```

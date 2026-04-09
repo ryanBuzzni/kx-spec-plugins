@@ -1,7 +1,7 @@
 {
   "name": "kx",
   "description": "KX 전용 플러그인 - 스펙 기반 개발 워크플로우, 에이전트 시스템, 코드 리뷰, 디버깅, 테스팅",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": {
     "name": "Buzzni"
   }
