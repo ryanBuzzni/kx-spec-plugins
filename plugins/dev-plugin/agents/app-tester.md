@@ -203,23 +203,65 @@ env:
 
 | 우선순위 | 방법 | 설명 |
 |---------|------|------|
-| 1 | `id:` (accessibilityLabel) | 가장 안정적, UI 변경에 강함 |
+| 1 | `id:` (accessibilityLabel / testID) | 가장 안정적, UI 변경에 강함 |
 | 2 | `text:` | 읽기 쉬우나 문구 변경에 취약 |
 | 3 | `index:` | 취약, 불가피할 때만 사용 |
-| 4 | `point:` | 최후의 수단 |
+| 4 | `point:` | 동적 UI(드롭다운, 확인 버튼 등)에서 fallback으로 사용 |
+
+#### ⚠️ 모달(SimpleModal) 내부 vs 외부 접근 방식
+
+React Native 모달은 일반 View와 접근 방식이 다르다. **반드시 구분하여 접근**해야 한다.
+
+| 위치 | 접근 방법 | 이유 |
+|------|----------|------|
+| **모달 외부** (일반 화면) | `id:` (testID) | testID가 Maestro의 `id:`에 매핑됨 |
+| **모달 내부** (SimpleModal 등) | `id:` (accessibilityLabel) | 모달 내부에서는 testID가 인식되지 않는 경우가 있음. `accessibilityLabel` prop을 사용하면 Maestro `id:`로 접근 가능 |
+
+```tsx
+// 모달 외부 — testID 사용
+<TouchableOpacity testID="action_item_card_1" onPress={handlePress}>
+  <Text>할 일 항목</Text>
+</TouchableOpacity>
+
+// 모달 내부 — accessibilityLabel 사용
+<SimpleModal visible={showModal}>
+  <TextInput accessibilityLabel="modal_input_title" placeholder="제목" />
+  <TouchableOpacity accessibilityLabel="modal_button_confirm" onPress={handleConfirm}>
+    <Text>확인</Text>
+  </TouchableOpacity>
+</SimpleModal>
+```
 
 ```yaml
-# BEST: accessibilityLabel / testID
+# 모달 외부 요소 탭
 - tapOn:
-    id: "submit_button"
+    id: "action_item_card_1"    # testID 기반
 
-# OK: 텍스트
-- tapOn: "제출"
-
-# AVOID: 좌표
+# 모달 내부 요소 탭
 - tapOn:
-    point: "50%,90%"
+    id: "modal_input_title"     # accessibilityLabel 기반
+- inputText: "새 할일"
+- tapOn:
+    id: "modal_button_confirm"  # accessibilityLabel 기반
 ```
+
+#### 좌표 기반 fallback이 필요한 경우
+
+상태 드롭다운, 삭제 확인 팝업 등 **동적으로 나타나는 UI 요소**는 testID/accessibilityLabel이 적용되지 않거나 Maestro가 인식하지 못하는 경우가 있다. 이 경우 **좌표 기반 접근을 fallback으로 사용**한다.
+
+```yaml
+# 상태 드롭다운 선택 — 드롭다운 메뉴 아이템은 좌표로 접근
+- tapOn:
+    id: "status_dropdown"          # 드롭다운 트리거는 id로
+- tapOn:
+    point: "50%,45%"               # 드롭다운 옵션은 좌표로 fallback
+
+# 삭제 확인 다이얼로그 — 시스템 Alert 등은 좌표로 접근
+- tapOn:
+    point: "70%,52%"               # "확인" 버튼 위치
+```
+
+> **접근 전략 요약**: 모달 외부는 `testID` → 모달 내부는 `accessibilityLabel` → 동적 UI는 `point:` fallback. 테스트 작성 전 `maestro studio`로 실제 요소 인식 상태를 먼저 확인하면 시행착오를 줄일 수 있다.
 
 > **React Native에서 testID 설정**: `<Button testID="submit_button" />` → Maestro에서 `id: "submit_button"`으로 접근
 
