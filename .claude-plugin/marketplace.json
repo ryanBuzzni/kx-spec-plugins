@@ -6,9 +6,9 @@
   },
   "plugins": [
     {
-      "name": "dev-plugin",
+      "name": "kx",
       "description": "KX 전용 플러그인 - 스펙 기반 개발 워크플로우, 에이전트 시스템, 코드 리뷰, 디버깅, 테스팅",
-      "source": "./plugins/dev-plugin",
+      "source": "./plugins/kx",
       "category": "development"
     }
   ]
