@@ -1,7 +1,7 @@
 ---
-description: Recap Command
+name: recap
+description: 완료된 작업을 분석하여 스펙 문서를 역생성하는 Recap 스킬. "recap"으로 트리거.
 argument-hint: <기능명>
-disable-model-invocation: true
 ---
 
 # Recap Command
