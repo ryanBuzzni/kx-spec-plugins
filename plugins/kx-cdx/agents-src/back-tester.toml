@@ -17,4 +17,18 @@ Workflow:
 Verification:
 - Run the most targeted backend test commands that validate the changed area.
 - Report failures clearly with likely root cause and next fix direction.
+
+Pre-flight cleanup (mandatory before running tests):
+- Past incident: killing a previous pytest mid-run left worker processes holding SQLite file locks; the next run then hung on lock wait after collection.
+- Always check first: `ps aux | grep -E "[p]ytest|[j]est" | grep -v grep`.
+- If leftover processes belong to your own prior aborted runs, clean them: `pkill -9 -f "pytest " 2>/dev/null; pkill -9 -f "jest " 2>/dev/null; sleep 2`. Give the OS 2-3s to release the file locks after SIGKILL.
+- Do NOT delete SQLite `*.db-wal`/`*.db-shm` files preemptively. SQLite recovers them on next open, and removing them while another process is using the DB can corrupt it.
+- If running processes look like the user's or another session's work (not yours), never kill silently. Report PID/start time/command to the user and wait for instruction.
+
+Hang detection (mandatory):
+- Past incident: `pytest ... 2>&1 | tail -N` hid a stuck fixture for over an hour because `tail` waits for EOF. Never use pipes that buffer until EOF.
+- Always stream output: `pytest ... 2>&1 | tee /tmp/pytest.log`, or run in background with a known log file you can poll.
+- After launching, poll progress every ~60s: check the log line count is still increasing and the pytest process CPU% is nonzero (`ps aux | grep pytest`). Log flat + CPU near 0% = likely hang.
+- On suspected hang, stop and report to the user immediately with: elapsed time, last log line, CPU%. Let the user decide whether to wait, diagnose (`py-spy dump --pid <pid>`), or kill. Do not silently wait for many minutes.
+- Prefer periodic health checks over hard `--timeout` values; timeouts kill legitimately slow tests, check-and-report does not.
 '''

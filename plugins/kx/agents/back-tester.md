@@ -148,11 +148,52 @@ export async function getAuthHeaders(): Promise<Record<string, string>> {
 ```
 
 ### 3단계: 테스트 실행
+
+#### 사전 정리 (pre-flight, 반드시 먼저 수행)
+
+과거 이슈: 이전 테스트 실행을 중간에 kill했더니 그 잔여 pytest/worker 프로세스가 SQLite 파일락을 붙잡은 채로 남아, 다음 실행이 collect 이후 락 대기에서 hang되는 사례가 있음. 시작 전 반드시 잔여 프로세스를 점검한다.
+
+1. **잔여 pytest/jest 프로세스 확인**
+   ```bash
+   ps aux | grep -E "[p]ytest|[j]est" | grep -v grep
+   ```
+2. **내 세션에서 중단된 잔여면 정리**
+   ```bash
+   pkill -9 -f "pytest " 2>/dev/null; pkill -9 -f "jest " 2>/dev/null; sleep 2
+   ```
+   - SIGKILL 후 2~3초 대기 → OS가 파일락 자동 해제.
+   - 보통 WAL/shm 파일(`*.db-wal`, `*.db-shm`)은 **지우지 않는다** (SQLite가 다음 open 시 자동 복구). 다른 프로세스가 돌고 있을 때 삭제하면 DB 손상 위험.
+3. **본인이 돌린 게 아니라 사용자/다른 세션의 프로세스로 보이면 절대 임의로 kill 금지**
+   - 사용자에게 현재 실행 중인 프로세스 정보(PID, 시작 시간, 명령어)를 보고하고 지시를 받는다.
+4. 정리 후 본 테스트 실행으로 진행.
+
+#### 실행 방식
+
 - **기본: 관련 파일 테스트를 단일 프로세스(-p0)로 묶어서 진행**
 - `pytest [파일1] [파일2] ... -x -p no:randomly` 또는 `jest [파일1] [파일2] ... --runInBand`
 - 병렬 실행 시 DB 충돌 방지를 위해 단일 프로세스 우선
 - 실패 시 원인 분석 후 수정
 - 모든 테스트 Green 확인
+
+#### Hang 감지 규칙 (반드시 지킬 것)
+
+과거 장애 사례: `pytest ... 2>&1 | tail -N` 형태로 실행했을 때, pytest가 fixture/DB 초기화에서 멈춰도 `tail`이 EOF만 기다려 **1시간 넘게 hang 상태를 감지 못 함**. 동일 실수 방지를 위해 다음을 반드시 지킨다.
+
+- **로그는 실시간으로 보이는 형태로 출력**
+  - ❌ `pytest ... 2>&1 | tail -N` — EOF 전까지 아무것도 안 보임
+  - ✅ `pytest ... 2>&1 | tee /tmp/pytest.log` — 실시간 + 파일 저장
+  - ✅ background 실행 + output 파일 지정, 주기 확인
+- **실행 후 일정 간격(권장: 60초)마다 진행 상태 체크**
+  - log 라인 수 증가 여부 확인 (`wc -l /tmp/pytest.log`)
+  - pytest 프로세스 CPU% 확인 (`ps aux | grep pytest`)
+  - **log 증가 없음 + CPU 0.x% = stuck 의심**
+- **stuck 의심 시 즉시 사용자에게 보고**
+  - 현재 상태(경과 시간, 마지막 로그 라인, CPU%)를 요약해 보고
+  - 계속 기다릴지 / 진단할지 / kill 할지는 사용자 결정
+  - 필요 시 `py-spy dump --pid <pid>` 로 stuck 지점 확인
+- **절대 장시간(수 분 이상) 묻지 않고 방치 금지**
+  - 끝났는지 모르는 상태로 두는 것이 가장 큰 실수
+  - timeout 숫자로 강제 kill 하는 것보다 **주기 체크 + 보고**가 우선
 
 ### 4단계: 검증
 - 변경된 API/서비스가 테스트로 커버되는지 확인
