@@ -1,0 +1,39 @@
+{
+  "name": "kx-cdx",
+  "version": "0.1.0",
+  "description": "KX Codex workflow plugin",
+  "author": {
+    "name": "[TODO: author-name]",
+    "email": "[TODO: author-email]",
+    "url": "[TODO: author-url]"
+  },
+  "homepage": "[TODO: homepage-url]",
+  "repository": "[TODO: repository-url]",
+  "license": "[TODO: license]",
+  "keywords": [
+    "kx",
+    "workflow",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "KX Codex",
+    "shortDescription": "KX workflows for Codex.",
+    "longDescription": "Codex plugin scaffold for KX workflows, skills, and future integrations.",
+    "developerName": "[TODO: developer-name]",
+    "category": "Development",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "[TODO: website-url]",
+    "privacyPolicyURL": "[TODO: privacy-policy-url]",
+    "termsOfServiceURL": "[TODO: terms-of-service-url]",
+    "defaultPrompt": [
+      "Use KX Codex to start a spec-driven coding task.",
+      "Apply the KX workflow to plan and implement a change.",
+      "Set up the next KX development task in this repo."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
