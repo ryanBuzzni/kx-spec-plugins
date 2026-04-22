@@ -16,9 +16,9 @@ Use this skill as the entry point for KX workflows in Codex.
 
 ## Next build-out targets
 
-- Port KX planning workflow into Codex-native skills.
-- Port KX development agents into `.codex/agents/*.toml` or plugin-bundled workflows.
-- Add shared references and optional MCP/app integrations once the base workflow is stable.
+- Verify the plugin skill set matches `plugins/kx`.
+- Sync KX custom agents from this plugin into `~/.codex/agents/`.
+- Keep Codex-side instructions aligned with the Claude plugin without editing the Claude source.
 
 ## Working rules
 

@@ -95,7 +95,7 @@ disable-model-invocation: true
 - [주의할 점]
 ```
 
-계획 승인 후 write-spec 스킬로 spec.md를 생성하고 바로 spec-execute 스킬을 이어서 실행한다.
+계획 승인 후 spec-write 스킬로 spec.md를 생성하고 바로 spec-execute 스킬을 이어서 실행한다.
 
 ---
 

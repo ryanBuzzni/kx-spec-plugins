@@ -26,8 +26,8 @@ planner가 사용자와 소통하며 계획을 수립하고 승인을 받는다.
 
 | 작업 내용 | 에이전트 |
 |----------|---------|
-| 코드 구조 파악, 기존 패턴 분석 | codebase-explorer |
-| 라이브러리/프레임워크 문서 확인 | docs-researcher |
+| 코드 구조 파악, 기존 패턴 분석 | explorer |
+| 라이브러리/프레임워크 문서 확인 | explorer 또는 웹 검색 |
 | API, DB, 서버 로직 개발 | backend-dev |
 | 웹 페이지/컴포넌트 개발 | frontend-web-dev |
 | 앱 스크린/컴포넌트 개발 | frontend-app-dev |
@@ -37,7 +37,7 @@ planner가 사용자와 소통하며 계획을 수립하고 승인을 받는다.
 `~/plugins/kx-cdx/skills/use-agents/references/AGENT_SYSTEM.md`의 실행 방법을 따른다.
 
 **Phase 1: 탐색 (병렬 가능)**
-- `codebase-explorer` + `docs-researcher` 동시 실행 가능
+- `explorer` + 문서 조사 동시 진행 가능
 
 **Phase 2: 개발 (의존성 판단)**
 - 독립적 작업 → 병렬 실행

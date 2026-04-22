@@ -389,8 +389,8 @@ cmux new-split right --workspace workspace:1
 cmux new-split down --workspace workspace:1 --surface surface:7
 
 # 에이전트 실행
-cmux send --surface surface:7 "claude\n"
-cmux send --surface surface:8 "claude\n"
+cmux send --surface surface:7 "codex\n"
+cmux send --surface surface:8 "codex\n"
 
 # 작업 할당
 cmux send --surface surface:7 "read and understand the project\n"

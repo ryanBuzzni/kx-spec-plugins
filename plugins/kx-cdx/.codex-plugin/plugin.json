@@ -1,38 +1,38 @@
 {
   "name": "kx-cdx",
   "version": "0.1.0",
-  "description": "KX Codex workflow plugin",
+  "description": "KX spec-driven workflow plugin for Codex",
   "author": {
-    "name": "[TODO: author-name]",
-    "email": "[TODO: author-email]",
-    "url": "[TODO: author-url]"
+    "name": "ganghyejun",
+    "url": "https://github.com/ryanBuzzni"
   },
-  "homepage": "[TODO: homepage-url]",
-  "repository": "[TODO: repository-url]",
-  "license": "[TODO: license]",
+  "homepage": "https://github.com/ryanBuzzni/kx-spec-plugins",
+  "repository": "https://github.com/ryanBuzzni/kx-spec-plugins",
+  "license": "UNLICENSED",
   "keywords": [
     "kx",
     "workflow",
-    "codex"
+    "codex",
+    "spec"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "KX Codex",
-    "shortDescription": "KX workflows for Codex.",
-    "longDescription": "Codex plugin scaffold for KX workflows, skills, and future integrations.",
-    "developerName": "[TODO: developer-name]",
+    "shortDescription": "Spec-driven KX workflows for Codex.",
+    "longDescription": "KX Codex plugin with spec-driven skills, review/testing flows, and synced custom agents.",
+    "developerName": "Buzzni",
     "category": "Development",
     "capabilities": [
       "Read",
       "Write"
     ],
-    "websiteURL": "[TODO: website-url]",
-    "privacyPolicyURL": "[TODO: privacy-policy-url]",
-    "termsOfServiceURL": "[TODO: terms-of-service-url]",
+    "websiteURL": "https://github.com/ryanBuzzni/kx-spec-plugins",
+    "privacyPolicyURL": "https://github.com/ryanBuzzni/kx-spec-plugins",
+    "termsOfServiceURL": "https://github.com/ryanBuzzni/kx-spec-plugins",
     "defaultPrompt": [
       "Use KX Codex to start a spec-driven coding task.",
       "Apply the KX workflow to plan and implement a change.",
-      "Set up the next KX development task in this repo."
+      "Sync the KX agents and run the next workflow step."
     ],
     "brandColor": "#2563EB"
   }
