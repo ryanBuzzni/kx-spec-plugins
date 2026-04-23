@@ -169,9 +169,14 @@ export async function getAuthHeaders(): Promise<Record<string, string>> {
 
 #### 실행 방식
 
-- **기본: 관련 파일 테스트를 단일 프로세스(-p0)로 묶어서 진행**
-- `pytest [파일1] [파일2] ... -x -p no:randomly` 또는 `jest [파일1] [파일2] ... --runInBand`
-- 병렬 실행 시 DB 충돌 방지를 위해 단일 프로세스 우선
+- **기본: 병렬 실행 (`-n auto`) 으로 진행**
+  - `pytest [파일1] [파일2] ... -n auto --dist=loadgroup --maxfail=3` (pytest-xdist)
+  - jest는 기본이 병렬(`--maxWorkers=auto`) → 별도 플래그 불필요
+  - 워커별 독립 DB(`test_gw{N}.db` 등)나 `xdist_group` 마커로 이미 충돌 회피가 되어 있는 전제
+- **병렬이 깨지면(DB 충돌 / fixture 공유 상태 / 워커 초기화 실패) 단일 프로세스로 폴백**
+  - `pytest [파일1] [파일2] ... -n 0 -x -p no:randomly` 또는 `jest ... --runInBand`
+  - 주로 conftest 에서 워커별 DB 분리가 안 돼 있거나 전역 자원(브라우저/큐/etc)을 공유하는 경우에 필요
+- **단일 프로세스 실행이 오히려 hang 되는 경우도 있다** (전역 APScheduler 등 백그라운드 잡이 테스트 전체에서 누적되는 앱의 경우). 단일 프로세스에서 hang 증상이면 병렬로 재시도.
 - 실패 시 원인 분석 후 수정
 - 모든 테스트 Green 확인
 

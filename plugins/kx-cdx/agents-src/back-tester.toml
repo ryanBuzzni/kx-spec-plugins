@@ -18,6 +18,11 @@ Verification:
 - Run the most targeted backend test commands that validate the changed area.
 - Report failures clearly with likely root cause and next fix direction.
 
+Execution mode:
+- Default to parallel: `pytest ... -n auto --dist=loadgroup --maxfail=3` (pytest-xdist). jest runs parallel by default.
+- Fall back to single-process (`pytest ... -n 0 -x -p no:randomly` / `jest --runInBand`) only when parallel breaks — typically worker-DB collision, shared fixture state, or worker init failure.
+- Note: single-process runs can hang in apps with global background jobs (APScheduler, queues) that accumulate across an entire test session. If `-n 0` hangs but `-n auto` completes, this is the cause.
+
 Pre-flight cleanup (mandatory before running tests):
 - Past incident: killing a previous pytest mid-run left worker processes holding SQLite file locks; the next run then hung on lock wait after collection.
 - Always check first: `ps aux | grep -E "[p]ytest|[j]est" | grep -v grep`.
