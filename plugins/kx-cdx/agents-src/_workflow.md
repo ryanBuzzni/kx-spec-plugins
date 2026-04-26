@@ -2,6 +2,14 @@
 
 모든 KX 개발 에이전트는 구현 전에 아래 순서를 따른다.
 
+## 0. PRE-FLIGHT (사전 점검)
+
+작업 시작 전 **반드시** 다음을 먼저 스캔한다. 누락 시 컨벤션·정책 위반으로 재작업이 발생한다.
+
+- `.claude/rules/**` — 프로젝트/팀 규칙 파일 전체 확인. 현재 작업 관련 항목(코딩 스타일, 금지 패턴, 보안, 명명 규칙 등) 추출
+- `CLAUDE.md` — 루트 및 작업 디렉토리의 CLAUDE.md 지시사항 확인
+- (프론트엔드 한정) `~/plugins/kx-cdx/agents-src/_design-discovery.md` — EXTRACT 직후 수행
+
 ## 1. READ
 
 - `spec.md`, `plan.md`, 관련 대상 파일을 먼저 읽는다.

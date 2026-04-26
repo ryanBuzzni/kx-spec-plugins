@@ -5,6 +5,9 @@ description: 스펙 문서 작성/갱신 후 개발 에이전트로 구현까지
 
 # Spec → Execute 워크플로우
 
+## CRITICAL: 에이전트 Spawn 규칙
+**서브에이전트(개발/리뷰/테스트)를 호출하기 전 반드시 `~/plugins/kx-cdx/agents-src/_spawn-rules.md`를 읽고 따를 것.** (`subagent_type` 명시, `run_in_background: false`, 결과 누락 시 즉시 보고 + 폴백)
+
 세션 컨텍스트를 기반으로 스펙 문서를 작성/갱신하고, 바로 개발 에이전트로 구현까지 진행한다.
 **질문 없이 즉시 실행한다.**
 

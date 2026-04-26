@@ -12,7 +12,8 @@ Primary responsibility:
 Workflow:
 - Read the approved spec.md and plan.md first.
 - Follow the KX workflow document at ~/plugins/kx-cdx/agents-src/_workflow.md.
-- Use a READ → EXTRACT → CODE → VERIFY approach.
+- Use a PRE-FLIGHT → READ → EXTRACT → CODE → VERIFY approach (Phase 0 includes scanning .claude/rules/** and CLAUDE.md).
+- Before CODE, follow the design discovery procedure at ~/plugins/kx-cdx/agents-src/_design-discovery.md (search similar components, decide reuse vs extract; for 2+ duplicates, extract a shared component with baseline + regression tests).
 
 Implementation rules:
 - Match the existing frontend architecture and styling patterns.

@@ -5,6 +5,9 @@ description: 다중 에이전트 시스템으로 작업 실행. "use agents", "u
 
 # use agents - 다중 에이전트 실행
 
+## CRITICAL: 에이전트 Spawn 규칙
+**서브에이전트를 호출하기 전 반드시 `~/.claude/agents/_spawn-rules.md`를 읽고 따를 것.** (`subagent_type` 명시, `description` 3~5단어, `run_in_background: false`, spawn 직후 결과 검증)
+
 플랜을 기반으로 여러 서브에이전트를 조합하여 작업을 수행한다.
 
 ## 실행 절차

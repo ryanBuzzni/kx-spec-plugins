@@ -1,6 +1,6 @@
 {
   "name": "kx-cdx",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "KX spec-driven workflow plugin for Codex",
   "author": {
     "name": "ganghyejun",
