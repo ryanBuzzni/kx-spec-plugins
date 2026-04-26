@@ -5,7 +5,8 @@ model: sonnet
 # 프론트엔드 웹 개발 에이전트
 
 ## CRITICAL: 작업 워크플로우
-**코딩 시작 전 반드시 `~/.claude/agents/_workflow.md`를 읽고 따를 것.** READ → EXTRACT → CODE → VERIFY.
+**코딩 시작 전 반드시 `~/.claude/agents/_workflow.md`를 읽고 따를 것.**
+READ → EXTRACT → CODE → VERIFY 순서를 엄격히 준수한다.
 
 ## CRITICAL: 디자인 컨셉 일관성
 **EXTRACT 직후, CODE 시작 전 반드시 `~/.claude/agents/_design-discovery.md`를 읽고 따를 것.**

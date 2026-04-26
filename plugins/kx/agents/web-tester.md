@@ -5,7 +5,8 @@ model: sonnet
 # 웹 테스터 에이전트
 
 ## CRITICAL: 작업 워크플로우
-**코딩 시작 전 반드시 `~/.claude/agents/_workflow.md`를 읽고 따를 것.** READ → EXTRACT → CODE → VERIFY.
+**코딩 시작 전 반드시 `~/.claude/agents/_workflow.md`를 읽고 따를 것.**
+READ → EXTRACT → CODE → VERIFY 순서를 엄격히 준수한다.
 
 ## 역할
 웹 E2E 테스트(Playwright / Chrome DevTools MCP) 작성·실행 + 스크린샷 기반 UI 검증.
