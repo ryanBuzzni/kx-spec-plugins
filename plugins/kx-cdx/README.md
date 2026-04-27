@@ -20,7 +20,7 @@ kx-cdx 플러그인 설치해줘. marketplace 설정하고, agent sync까지 하
 ### 1. Clone or update the source repo
 
 ```bash
-cd ~/buzzni/projects
+cd ~/projects
 git clone https://github.com/ryanBuzzni/kx-spec-plugins.git
 cd kx-spec-plugins
 ```
@@ -28,7 +28,7 @@ cd kx-spec-plugins
 If the repo already exists:
 
 ```bash
-cd ~/buzzni/projects/kx-spec-plugins
+cd ~/projects/kx-spec-plugins
 git pull origin main
 ```
 
@@ -36,12 +36,17 @@ git pull origin main
 
 ```bash
 mkdir -p ~/plugins
-ln -sfn ~/buzzni/projects/kx-spec-plugins/plugins/kx-cdx ~/plugins/kx-cdx
+ln -sfn ~/projects/kx-spec-plugins/plugins/kx-cdx ~/plugins/kx-cdx
 ```
 
 ### 3. Register the local marketplace
 
-Create or update `~/.agents/plugins/marketplace.json`:
+The marketplace manifest lives **inside the marketplace root** at
+`<marketplace_root>/.agents/plugins/marketplace.json` (not `~/.agents/...`).
+Codex resolves it via the `source` path you register in `config.toml` (step 4).
+
+Use the repo root as the marketplace root and create
+`~/projects/kx-spec-plugins/.agents/plugins/marketplace.json`:
 
 ```json
 {
@@ -71,6 +76,10 @@ Create or update `~/.agents/plugins/marketplace.json`:
 Add this block to `~/.codex/config.toml` if it is not already present:
 
 ```toml
+[marketplaces.kx-codex-marketplace]
+source_type = "local"
+source = "/Users/<you>/projects/kx-spec-plugins"
+
 [plugins."kx-cdx@kx-codex-marketplace"]
 enabled = true
 ```
@@ -92,7 +101,7 @@ Restart Codex so refreshed plugin skills and agent registrations are loaded.
 When the plugin changes:
 
 ```bash
-cd ~/buzzni/projects/kx-spec-plugins
+cd ~/projects/kx-spec-plugins
 git pull origin main
 python3 ~/plugins/kx-cdx/scripts/sync_agents.py
 ```
