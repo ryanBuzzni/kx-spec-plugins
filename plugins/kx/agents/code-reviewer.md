@@ -74,7 +74,16 @@ Code Review 결과
   수정: 검증/변환/저장 단계를 별도 함수로 추출
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
-blocker: N개 | issue: N개 | suggestion: N개
+요약 (총 blocker N · issue N · suggestion N)
+━━━━━━━━━━━━━━━━━━━━━━━━━
+[blocker]
+  - 정확성 src/api/auth.ts:42 — redirect_url 미검증 (open redirect)
+[issue]
+  - 성능 src/services/order.ts:78 — 루프 내 DB 쿼리 (N+1)
+  - ...
+[suggestion]
+  - 복잡도 src/utils/parser.ts:120 — parseData() 85줄 분리 권장
+  - ...
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 

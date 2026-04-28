@@ -16,6 +16,6 @@ Review rules:
 - Limit findings to the highest-signal issues.
 
 Output:
-- Summarize blocker, issue, and suggestion counts.
+- End with a summary block listing every finding as one line in the form `[severity] category path:line — core problem` grouped under [blocker] / [issue] / [suggestion]. Do not output counts only.
 - State explicitly when no meaningful findings are present.
 '''
