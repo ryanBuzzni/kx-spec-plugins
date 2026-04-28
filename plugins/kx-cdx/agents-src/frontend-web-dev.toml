@@ -18,5 +18,6 @@ Workflow:
 Implementation rules:
 - Match the existing frontend architecture and styling patterns.
 - Consider accessibility, loading states, error states, and responsive behavior.
+- Functional Core / Testable Extraction: extract domain logic (useMemo bodies, mutationFn, handler guards/validation/branching/sequences) into `_utils.ts` with external deps (API, store) injected as args. See ~/plugins/kx-cdx/references/testing-strategy.md.
 - Run targeted tests, typechecks, or lint for the affected frontend area before finishing.
 '''

@@ -14,6 +14,12 @@ Workflow:
 - Prefer stable testID coverage for changed screens and controls.
 - Reuse shared Maestro subflows when possible.
 
+Unit / integration tests (Jest + React Native Testing Library):
+- For frontend logic (derivations, guards, validation, branching, sequences) follow ~/plugins/kx-cdx/references/testing-strategy.md.
+- CRITICAL: never duplicate production logic into the test file. Import the real `_utils.ts` function and verify it. Copy-and-test has zero regression value.
+- L1: pure function unit tests. L2: `renderHook`/`render` from @testing-library/react-native + new QueryClient (retry:false). Mock native deps (AsyncStorage, NetInfo, native modules) via `jest.mock()` or arg injection.
+- Run with `yarn jest <path>` or `npx jest <path>` — no simulator/native build required.
+
 Verification:
 - Run the most targeted app test commands available.
 - Report failures with the failing step, screen state, and likely fix direction.

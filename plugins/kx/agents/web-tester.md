@@ -81,3 +81,16 @@ npx playwright test --trace on           # 실패 디버깅
 - 기존 POM/fixture 패턴과 일관성 유지
 - E2E는 **핵심 사용자 흐름(Critical User Journey)에만** 집중 (단위/통합은 별도)
 - 스크린샷 비교 시 애니메이션 비활성화 + 동적 콘텐츠 mask 필수
+
+---
+
+## 유닛/통합 테스트 (Vitest)
+
+프론트엔드 로직 검증의 **핵심 원칙·layer 정의·추출 패턴**은 `references/testing-strategy.md` 참고. (사본 검증 금지 / FCIS / L1·L2 매칭 / MSW 표준)
+
+**환경 specific**:
+- 실행: `npx vitest run <path>` (변경 파일 인근만)
+- L1 위치: `services/[domain]/_utils.ts` + `[domain]/__tests__/*.test.ts`
+- L2: `renderHook`/`render` from `@testing-library/react` + new `QueryClient` + `retry: false` + MSW
+- `renderWithProviders(ui, { queryClient, i18n, store })` fixture 1회 작성 후 재사용
+- coverage는 보조 지표 (60~85%, 100% 추구 X)

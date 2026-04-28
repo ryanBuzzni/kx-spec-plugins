@@ -30,6 +30,7 @@ React Native 모바일 앱의 UI/UX, 컴포넌트, 네이티브 기능 담당.
 - 절대 경로 import (`@/`)
 - 플랫폼 분기는 `Platform.select` / `Platform.OS`
 - 메모리 누수 방지 — 이벤트 리스너·타이머·subscription은 cleanup에서 해제
+- **Functional Core / Testable Extraction**: 도메인 로직(`useMemo` 본체·`mutationFn`·가드/검증/분기/시퀀스)은 `_utils.ts`로 추출 + 외부 의존(API, AsyncStorage, native module)은 인자 주입. 상세는 `references/testing-strategy.md`
 
 ## 작업 체크리스트
 

@@ -105,3 +105,16 @@ maestro test -e API_URL=https://staging.example.com maestro/flows/
 - testID 없으면 소스에 먼저 추가
 - 시뮬레이터/에뮬레이터 실행 + 앱 빌드 완료 전제
 - 네트워크 의존 테스트는 timeout 넉넉히 (15000ms+)
+
+---
+
+## 유닛/통합 테스트 (Jest + React Native Testing Library)
+
+프론트엔드 로직 검증의 **핵심 원칙·layer 정의·추출 패턴**은 `references/testing-strategy.md` 참고. (사본 검증 금지 / FCIS / L1·L2 매칭 / MSW 표준)
+
+**RN 환경 specific**:
+- 실행: `yarn jest <path>` 또는 `npx jest <path>` — 시뮬레이터/네이티브 빌드 불필요, CI에서 빠르게
+- L1 위치: `services/[domain]/_utils.ts` + `[domain]/__tests__/*.test.ts`
+- L2: `renderHook`/`render` from `@testing-library/react-native` + new `QueryClient` + `retry: false`
+- 네이티브 의존(AsyncStorage, NetInfo, native module)은 `jest.mock()` 또는 인자 주입으로 우회
+- `renderWithProviders(ui, { queryClient, i18n, navigation })` fixture 1회 작성 후 재사용

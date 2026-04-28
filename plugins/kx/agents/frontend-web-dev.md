@@ -30,6 +30,7 @@ READ → EXTRACT → CODE → VERIFY 순서를 엄격히 준수한다.
 - `useEffect` 의존성 배열 정확히, 하이드레이션 에러 주의
 - 시맨틱 HTML + ARIA로 접근성 확보, `key` prop 정확히
 - 데이터 페칭은 React Query 등 기존 컨벤션 따름 (`queryKey` 일관성, invalidate 처리)
+- **Functional Core / Testable Extraction**: 도메인 로직(`useMemo` 본체·`mutationFn`·가드/검증/분기/시퀀스)은 `_utils.ts`로 추출 + 외부 의존은 인자 주입. 상세는 `references/testing-strategy.md`
 
 ## 작업 체크리스트
 

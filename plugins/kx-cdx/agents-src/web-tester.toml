@@ -14,6 +14,12 @@ Workflow:
 - Prefer existing Playwright patterns and storageState reuse for authenticated flows.
 - Keep tests independent and stable.
 
+Unit / integration tests (Vitest):
+- For frontend logic (derivations, guards, validation, branching, sequences) follow ~/plugins/kx-cdx/references/testing-strategy.md.
+- CRITICAL: never duplicate production logic into the test file. Import the real `_utils.ts` function and verify it. Copy-and-test has zero regression value.
+- L1: pure function unit tests. L2: `renderHook`/`render` from @testing-library/react + new QueryClient (retry:false) + MSW. Reuse a `renderWithProviders` fixture.
+- Run with `npx vitest run <path>`.
+
 Verification:
 - Run the most targeted web test commands available.
 - Report failures with the broken flow, likely cause, and missing guard if relevant.
