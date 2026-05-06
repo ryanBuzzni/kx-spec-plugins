@@ -10,6 +10,14 @@ spec-plan → spec-execute → spec-write → spec-code-review → spec-testing
 
 ---
 
+## 공통 원칙: Serena MCP 우선 사용
+
+이 워크플로우의 모든 단계에서 코드 **탐색·분석·편집**은 **Serena MCP를 1순위로 사용**한다. Grep/Glob/Edit 같은 텍스트 기반 도구는 dead code 오인이나 잘못된 위치 수정으로 이어질 수 있어, Serena가 적용 불가한 경우(비코드 파일 등)에만 사용한다.
+
+특히 **Phase 1(spec-plan)의 코드 기반 검증**과 **Phase 4(spec-code-review)의 영향 범위 분석**에서 Serena의 심볼 단위 참조 추적·편집이 필수적이다.
+
+---
+
 ## Phase 1: 계획 (spec-plan)
 
 사용자 요청을 분석하고, 불명확한 부분을 질문으로 확인한 후 구현 계획을 수립한다.
