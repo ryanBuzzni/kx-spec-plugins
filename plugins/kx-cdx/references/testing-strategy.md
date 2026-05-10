@@ -4,6 +4,34 @@
 
 ---
 
+## 🧩 비즈니스 로직 분리 & 테스트 전략 (CRITICAL)
+
+> **BDD 로 스펙 → 비즈니스 로직은 훅으로 → 훅 단위 테스트 필수, e2e 는 요청 시.**
+
+훅으로 분리하는 이유는 **테스트 가능성**. 로직이 컴포넌트에 박혀 있으면 항상 DOM 렌더가 필요해 무겁고 느리다. 훅으로 빼면 `renderHook` 으로 직접 호출해 빠르고 결정적으로 검증할 수 있다.
+
+### 1. spec 단계: BDD Acceptance Criteria 작성
+각 시나리오를 **Given / When / Then** 형식으로 명시한다. 테스트 에이전트가 추후 해석하지 않도록 스펙 단계에서 확정한다. (`spec-write` 스킬의 spec.md 템플릿 참조)
+
+### 2. 구현: 비즈니스 로직은 훅으로
+- 위치: `features/{name}/_hooks/use{Name}.ts`
+- **비즈니스 로직만** 훅으로 분리: API 호출, 인증/권한 분기, 라우팅 분기, 검증 규칙, 외부 스토리지(AsyncStorage 등)
+- UI 로직(hover, open/close 토글, 애니메이션, ref, 레이아웃 분기)은 컴포넌트에 둬도 됨
+- 판별 기준: **"깨졌을 때 잘못된 데이터가 저장되거나 잘못된 화면으로 가는가?"** → YES 면 비즈니스 로직 → 훅으로
+
+### 3. 단위 테스트 (vitest / jest, 항상 작성)
+- 위치: `features/{name}/_hooks/use{Name}.test.tsx`
+- 훅을 `renderHook` 으로 직접 호출
+- mock 대상은 **외부 의존만**: `next/navigation` 의 `useRouter`, `global.fetch`, native module
+- **production 코드(Jotai atom, 다른 훅 등)는 mock 하지 않고 실제로 사용**
+- mock 응답 본문은 production 과 **같은 타입을 import** 해서 작성 (schema drift 방지)
+- 각 테스트는 spec.md 의 **BDD Scenario 와 1:1 매핑**
+
+### 4. e2e 테스트 (Playwright / Maestro, 요청 시에만)
+기본 워크플로에는 포함하지 않는다. OAuth/SSO/결제 등 외부 의존으로 결정적이지 않은 경우가 많기 때문. 사용자가 명시적으로 요청한 경우에만 작성한다.
+
+---
+
 ## 핵심 원칙 (CRITICAL)
 
 ### 1. 사본 검증 금지

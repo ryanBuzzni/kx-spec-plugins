@@ -30,7 +30,8 @@ READ → EXTRACT → CODE → VERIFY 순서를 엄격히 준수한다.
 - `useEffect` 의존성 배열 정확히, 하이드레이션 에러 주의
 - 시맨틱 HTML + ARIA로 접근성 확보, `key` prop 정확히
 - 데이터 페칭은 React Query 등 기존 컨벤션 따름 (`queryKey` 일관성, invalidate 처리)
-- **Functional Core / Testable Extraction**: 도메인 로직(`useMemo` 본체·`mutationFn`·가드/검증/분기/시퀀스)은 `_utils.ts`로 추출 + 외부 의존은 인자 주입. 상세는 `references/testing-strategy.md`
+- **비즈니스 로직은 훅으로 분리 (CRITICAL)**: API 호출·인증/권한 분기·라우팅 분기·검증·외부 스토리지 등 "깨지면 잘못된 데이터가 저장되거나 잘못된 화면으로 가는" 로직은 `features/{name}/_hooks/use{Name}.ts` 로 분리. UI 로직(hover, toggle, 애니메이션, ref)은 컴포넌트에 둠. 이렇게 분리해야 `renderHook` 으로 단위 테스트 가능. 상세는 `references/testing-strategy.md`
+- **Functional Core / Testable Extraction**: 순수 함수(가드/검증/분기 매핑)는 `_utils.ts` 로 추가 분리하고 외부 의존은 인자 주입.
 
 ## 작업 체크리스트
 

@@ -8,8 +8,16 @@ model: sonnet
 **코딩 시작 전 반드시 `~/.claude/agents/_workflow.md`를 읽고 따를 것.**
 READ → EXTRACT → CODE → VERIFY 순서를 엄격히 준수한다.
 
+## CRITICAL: 테스트 우선순위 (BDD + 훅 기반)
+1. **훅 단위 테스트가 디폴트** — `features/{name}/_hooks/use{Name}.ts` 의 비즈니스 로직을 `renderHook` (jest + `@testing-library/react-native`) 으로 직접 검증. spec.md 의 BDD Scenario(Given/When/Then) 와 **1:1 매핑**.
+2. **e2e (Maestro) 는 사용자 명시 요청 시에만** — 시뮬레이터/네이티브 빌드·외부 의존이 비결정적이라 기본 워크플로 미포함. "Maestro 작성해줘" / "e2e 작성해줘" 같은 명시 요청이 없으면 작성하지 않는다.
+3. mock 은 외부 의존만(navigation, fetch, AsyncStorage, native module). production 코드(atom, 다른 훅)는 mock 금지.
+4. mock 응답 본문은 production 과 같은 타입을 import 해서 작성 (schema drift 방지).
+
+상세 원칙: `references/testing-strategy.md`
+
 ## 역할
-React Native/Expo 앱의 UI 테스트를 **Maestro**로 작성·실행. (Playwright는 모바일 앱 불가)
+React Native/Expo 앱의 단위/통합 테스트 (jest + RNTL) 작성·실행이 1차. UI 테스트(Maestro)는 명시 요청 시.
 
 ## 디렉토리 구조
 ```
@@ -108,13 +116,20 @@ maestro test -e API_URL=https://staging.example.com maestro/flows/
 
 ---
 
-## 유닛/통합 테스트 (Jest + React Native Testing Library)
+## 유닛/통합 테스트 (Jest + React Native Testing Library) — 디폴트 작업
 
-프론트엔드 로직 검증의 **핵심 원칙·layer 정의·추출 패턴**은 `references/testing-strategy.md` 참고. (사본 검증 금지 / FCIS / L1·L2 매칭 / MSW 표준)
+프론트엔드 로직 검증의 **핵심 원칙·layer 정의·추출 패턴**은 `references/testing-strategy.md` 참고. (BDD + 훅 분리 / 사본 검증 금지 / FCIS / MSW 표준)
+
+**훅 단위 테스트 (1순위)**:
+- 위치: `features/{name}/_hooks/use{Name}.test.tsx`
+- `renderHook` from `@testing-library/react-native` 로 훅 직접 호출
+- 각 테스트 = spec.md BDD Scenario 1개 (Given/When/Then 그대로 매핑)
+- mock 은 navigation, fetch, AsyncStorage, native module 같은 **외부 의존만**. atom/다른 훅은 실제 사용
+- mock 응답 타입은 production 에서 import (schema drift 방지)
 
 **RN 환경 specific**:
 - 실행: `yarn jest <path>` 또는 `npx jest <path>` — 시뮬레이터/네이티브 빌드 불필요, CI에서 빠르게
-- L1 위치: `services/[domain]/_utils.ts` + `[domain]/__tests__/*.test.ts`
-- L2: `renderHook`/`render` from `@testing-library/react-native` + new `QueryClient` + `retry: false`
-- 네이티브 의존(AsyncStorage, NetInfo, native module)은 `jest.mock()` 또는 인자 주입으로 우회
+- 순수 함수 추출 위치: `services/[domain]/_utils.ts` + `[domain]/__tests__/*.test.ts`
+- React Query 훅: new `QueryClient` + `retry: false`
+- 네이티브 의존은 `jest.mock()` 또는 인자 주입으로 우회
 - `renderWithProviders(ui, { queryClient, i18n, navigation })` fixture 1회 작성 후 재사용

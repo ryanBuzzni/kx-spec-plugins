@@ -72,10 +72,24 @@ created: YYYY-MM-DD
 - I want [원하는 기능]
 - So that [얻고자 하는 가치]
 
-## Acceptance Criteria
-- [ ] [세션에서 논의된 기준 1]
-- [ ] [세션에서 논의된 기준 2]
-- [ ] [세션에서 논의된 기준 3]
+## Acceptance Criteria (BDD)
+
+> **프론트엔드 작업이라면 반드시 Given/When/Then 형식**으로 작성한다. 테스트 에이전트가 이 시나리오를 그대로 훅 단위 테스트(`renderHook`)와 1:1 매핑한다. 스펙 단계에서 시나리오를 확정해야 후속 해석 부담이 없다.
+
+### Scenario 1: [시나리오명]
+- **Given** [초기 상태/전제 조건]
+- **When** [사용자 행동/이벤트]
+- **Then** [예상 결과/관찰 가능한 동작]
+
+### Scenario 2: [시나리오명]
+- **Given** ...
+- **When** ...
+- **Then** ...
+
+### Scenario N: [엣지/에러 케이스]
+- **Given** ...
+- **When** ...
+- **Then** ...
 
 ## Technical Constraints
 - [사용 기술 스택]

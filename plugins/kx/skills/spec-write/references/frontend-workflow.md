@@ -4,6 +4,36 @@
 
 ---
 
+## 0. 비즈니스 로직 분리 & BDD (CRITICAL)
+
+> **BDD 로 스펙 → 비즈니스 로직은 훅으로 → 훅 단위 테스트 필수, e2e 는 요청 시.**
+
+훅으로 분리하는 이유: **테스트 가능성**. 컴포넌트에 박힌 로직은 항상 DOM 렌더가 필요해 무겁고 느리다. 훅은 `renderHook` 으로 직접 호출해 빠르고 결정적으로 검증 가능.
+
+### 0.1 spec 단계 — BDD Acceptance Criteria
+spec.md 의 모든 시나리오는 **Given / When / Then** 형식. 테스트 에이전트가 시나리오를 그대로 훅 단위 테스트와 1:1 매핑한다.
+
+### 0.2 구현 — 비즈니스 로직은 훅으로
+- 위치: `features/{name}/_hooks/use{Name}.ts`
+- 비즈니스 로직만 훅으로 분리 (API 호출, 인증/권한 분기, 라우팅 분기, 검증 규칙, 외부 스토리지)
+- UI 로직(hover, open/close, 애니메이션, ref, 레이아웃 분기)은 컴포넌트에 둔다
+- 판별: "깨졌을 때 잘못된 데이터가 저장되거나 잘못된 화면으로 가는가?" → YES 면 훅으로
+
+### 0.3 단위 테스트 (vitest, 항상)
+- 위치: `features/{name}/_hooks/use{Name}.test.tsx`
+- `renderHook` 으로 직접 호출
+- mock 은 **외부 의존만**: `next/navigation` 의 `useRouter`, `global.fetch`
+- production 코드(Jotai atom, 다른 훅 등)는 mock 하지 않고 실제 사용
+- mock 응답은 production 과 **같은 타입을 import** 해서 작성 (schema drift 방지)
+- 각 테스트는 **BDD Scenario 와 1:1 매핑**
+
+### 0.4 e2e (Playwright, 요청 시에만)
+기본 워크플로 미포함. OAuth/SSO/결제 등 외부 의존이 비결정적이라 사용자가 명시 요청한 경우에만 작성.
+
+상세 원칙은 `references/testing-strategy.md` 참조.
+
+---
+
 ## 1. 핵심 원칙
 
 ### 1.1 컴포넌트 주도 개발 (Component-Driven Development)
