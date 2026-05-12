@@ -41,6 +41,22 @@ disable-model-invocation: true
 - **blocker가 0개**: 리뷰 결과를 보여주고 다음 단계(커밋)로 진행
 - **blocker가 1개 이상**: 리뷰 결과를 보여주고 **중단**. blocker 항목을 먼저 수정하도록 안내
 
+### 0-C. refetch 실행 (인수에 "refetch"가 포함된 경우만)
+
+`$ARGUMENTS`에 `refetch` 키워드가 포함된 경우, 작업 시작 전 최신 기본 브랜치를 받아 현재 작업에 반영한다.
+
+수행 절차:
+
+1. 작업 디렉토리가 깨끗하지 않으면 `git stash push -u -m "push-pr-refetch"`로 임시 저장
+2. 기본 브랜치명 확인 (`git remote show origin | grep 'HEAD branch'`, 실패 시 `main`)
+3. `git fetch origin [기본 브랜치]` 실행
+4. 현재 브랜치가 기본 브랜치면 `git pull --ff-only origin [기본 브랜치]`
+5. 현재 브랜치가 기본 브랜치가 아니면 `git rebase origin/[기본 브랜치]` 시도
+   - rebase 충돌 발생 시: 사용자에게 충돌 파일 목록을 보고하고 중단. 사용자가 직접 해결 후 다시 실행하도록 안내
+6. stash가 있었다면 `git stash pop`으로 복원 (충돌 시 보고)
+
+`$ARGUMENTS`에서 `refetch` 키워드를 제거한 나머지를 이후 단계에서 커밋 메시지로 사용한다.
+
 ### 1. 현재 상태 확인
 
 병렬로 실행:
@@ -129,7 +145,7 @@ disable-model-invocation: true
 
 ### 4. 커밋 메시지 결정
 
-- `$ARGUMENTS`에서 `recap`, `merge` 키워드를 제거한 나머지를 커밋 메시지로 사용
+- `$ARGUMENTS`에서 `recap`, `review`, `refetch`, `merge` 키워드를 제거한 나머지를 커밋 메시지로 사용
 - 커밋 메시지가 비어있으면 변경 내용을 분석하여 한국어로 자동 생성
   - 변경 유형 파악 (feat/fix/refactor/docs/chore 등)
   - 변경 핵심을 1~2문장으로 요약
