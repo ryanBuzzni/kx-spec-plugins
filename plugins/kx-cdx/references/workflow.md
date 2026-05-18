@@ -68,7 +68,7 @@ code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 
 | 단계 | 통과 조건 | 재진입 조건 |
 |------|----------|------------|
-| **spec-code-review** | blocker 0개 | blocker 1개 이상 |
+| **spec-code-review** | blocker 0개 AND issue 0개 | blocker 1개 이상 OR issue 1개 이상 |
 | **spec-testing** | 전체 테스트 통과 | 테스트 실패 1건 이상 |
 
 ### 개선 사이클 흐름
