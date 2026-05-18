@@ -50,5 +50,5 @@ Agent 도구 파라미터:
 
 리뷰 결과를 판정한다:
 
-- **blocker 0개 AND issue 0개** → "리뷰 통과. 커밋/푸시 가능합니다." + suggestion 목록
-- **blocker 1개+ OR issue 1개+** → 사용자 확인 없이 자동으로 개선 사이클 진입 (workflow.md 참조). suggestion은 자동 수정 대상이 아니므로 목록만 보고한다.
+- **blocker 0개** → "리뷰 통과. 커밋/푸시 가능합니다." + issue/suggestion 목록
+- **blocker 1개+** → 개선 사이클 진입 필요 (workflow.md 참조)
