@@ -69,7 +69,7 @@ description: 사용자의 작업 요청을 분석하고, 불명확한 부분은 
 ### 4. 분기
 
 - **질문이 있을 경우** → 인터뷰 진행 후 답변 대기
-- **질문이 없을 경우** → 바로 `/kx:spec-write` 스킬을 실행 (`--skip-confirm` 플래그 전달)
+- **질문이 없을 경우** → 바로 `/kx:spec-write` 스킬을 실행 (`--skip-confirm --workflow=execute` 플래그 전달)
 
 ### 5. 답변 수신 후
 
@@ -94,10 +94,12 @@ description: 사용자의 작업 요청을 분석하고, 불명확한 부분은 
 - [주의할 점]
 ```
 
-계획 승인 후 `/kx:spec-write` 스킬을 실행한다 (`--skip-confirm` 플래그 전달).
+계획 승인 후 `/kx:spec-write` 스킬을 실행한다 (`--skip-confirm --workflow=execute` 플래그 전달).
 `/kx:spec-write` 완료 후 자동으로 `/kx:spec-execute` 스킬이 이어서 실행된다.
 
-> **흐름: /kx:spec-plan → /kx:spec-write(승인 스킵) → /kx:spec-execute**
+> **흐름: /kx:spec-plan → /kx:spec-write(승인 스킵, execute 워크플로우) → /kx:spec-execute**
+>
+> TDD 워크플로우로 시작하려면 `/kx:spec-plan` 대신 `/kx:spec-grill`을 사용한다.
 
 ---
 
