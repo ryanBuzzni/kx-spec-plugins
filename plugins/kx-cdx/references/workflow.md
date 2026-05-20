@@ -45,9 +45,15 @@ spec-plan → spec-execute → spec-write → spec-code-review → spec-testing
 
 code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 
+- **Step 0 — Scope Drift 점검 (본 리뷰 전 1회)**
+  1. spec.md / plan.md / 최근 커밋 메시지를 읽어 "Intent(요청된 작업)"를 1줄 요약
+  2. 변경된 파일/심볼을 보고 "Delivered(실제 변경)"를 1줄 요약
+  3. 판정: `CLEAN` / `SCOPE_CREEP`(의도 외 변경 포함) / `MISSING_REQUIREMENT`(요구사항 누락)
+  4. 정보성 결과 — blocker로 자동 승격하지 않음. 단 `MISSING_REQUIREMENT`는 [issue]로 분류 권장
 - 정확성/보안/성능/품질 관점 리뷰
 - 리뷰 기준: `~/plugins/kx-cdx/references/code-review-checklist.md`
-- 결과: blocker / issue / suggestion 분류
+- 결과: blocker / issue / suggestion 분류 + 각 항목에 `[auto-applicable]` / `[needs-judgment]` 태그
+- 개선 사이클에서 `[auto-applicable]` 발견은 일괄 패치, `[needs-judgment]`는 사용자 확인 후 진행
 
 ## Phase 5: 테스트 (spec-testing)
 

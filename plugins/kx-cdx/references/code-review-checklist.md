@@ -19,6 +19,7 @@
 | **정확성: 비동기** | `await` 누락, 트랜잭션 중간 실패 시 롤백/정리 미보장, check-then-act 패턴의 race condition |
 | **정확성: 경계 조건** | 루프 종료 조건 오류 (`<` vs `<=`), 배열 인덱스 범위 초과, 빈 컬렉션 미처리 |
 | **정확성: 상태 전이** | 잘못된 상태로 진입할 수 있는 경로 존재, 공유 상태 변경이 다른 코드에 영향 |
+| **정확성: Enum/상수 완전성** | 새 enum 값/상태/타입 상수 추가 시 모든 소비처(switch, if-elsif, 필터 배열, UI 표시, DB 영속화) 미점검. Grep으로 sibling 값을 찾아 각 매치 파일을 read하여 신규 값 처리 누락 여부 확인 — 이 점검은 diff 외부 파일 읽기를 필수로 포함 |
 | **정확성: 수치 연산** | 부동소수점 `==` 비교, 정수 나눗셈 truncation, 금액 계산에 float 사용 |
 | **보안: 인젝션** | SQL 문자열 결합 쿼리, XSS 미이스케이프 출력, OS 커맨드 인젝션 |
 | **보안: 시크릿** | 하드코딩된 API 키, 비밀번호, 토큰, 시크릿 |
@@ -66,6 +67,14 @@
 - 현재 변경과 무관한 기존 기술 부채
 - 변수명 케이스 스타일 (camelCase vs snake_case)
 
+## 추가 제외 규칙 — 노이즈 방지
+
+- 이미 diff에 처리된 사항 재지적 금지 — 변경 코드가 이미 그 문제를 해결했다면 코멘트하지 말 것
+- 현재 변경과 무관한 기존 코드의 컨벤션/스타일 차이 지적 금지 (기능 영향 없는 경우)
+- 입력이 제약되어 실제로 발생할 수 없는 엣지케이스 지적 금지 (호출 컨텍스트 확인 후 판단)
+- 무해한 redundancy(가독성에 도움되는 중복 검증 등) 지적 금지
+- 임계값/매직넘버에 "주석 추가하라"는 요구 금지 — 의미 있는 이름의 상수 추출만 권장
+
 ---
 
 ## 리뷰 원칙
@@ -78,6 +87,8 @@
 
 ## 결과 출력 형식
 
+각 발견에 `[auto-applicable]` 또는 `[needs-judgment]` 태그를 부여한다. 판정 기준: `references/auto-fix-criteria.md`
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 Code Review 결과
@@ -86,19 +97,20 @@ Code Review 결과
 [praise] src/services/order.ts:25
   팩토리 패턴으로 주문 생성 로직을 깔끔하게 분리
 
-[blocker] 정확성 — src/api/auth.ts:42
+[blocker] 정확성 — src/api/auth.ts:42 [needs-judgment]
   문제: redirect_url이 검증 없이 res.redirect()에 전달
   수정: 허용 도메인 allowlist로 검증 필요
 
-[issue] 성능 — src/services/order.ts:78
+[issue] 성능 — src/services/order.ts:78 [auto-applicable]
   문제: 루프 내에서 DB 쿼리 호출 (N+1)
   수정: WHERE IN으로 일괄 조회 변경
 
-[suggestion] 복잡도 — src/utils/parser.ts:120
+[suggestion] 복잡도 — src/utils/parser.ts:120 [needs-judgment]
   문제: parseData() 함수가 85줄 — 분리 가능
   수정: 검증/변환/저장 단계를 별도 함수로 추출
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 blocker: N개 | issue: N개 | suggestion: N개
+auto-applicable: N개 | needs-judgment: N개
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
