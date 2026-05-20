@@ -53,7 +53,7 @@ code-reviewer 에이전트를 spawn하여 변경된 코드를 리뷰한다.
 - 정확성/보안/성능/품질 관점 리뷰
 - 리뷰 기준: `~/.claude/skills/spec/references/code-review-checklist.md`
 - 결과: blocker / issue / suggestion 분류 + 각 항목에 `[auto-applicable]` / `[needs-judgment]` 태그
-- 개선 사이클에서 `[auto-applicable]` 발견은 일괄 패치, `[needs-judgment]`는 사용자 확인 후 진행
+- 개선 사이클에서 `[auto-applicable]` 발견은 일괄 패치, `[needs-judgment]`는 **사용자에게 묻지 않고** spec 문서의 `## 리뷰 이슈 참고` 섹션에 기록 (상세 형식은 `references/auto-fix-criteria.md` 참조)
 
 ## Phase 5: 테스트 (spec-testing)
 
