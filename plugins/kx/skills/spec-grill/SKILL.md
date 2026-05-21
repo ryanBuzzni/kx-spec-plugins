@@ -37,7 +37,7 @@ description: TDD 워크플로우 진입점. grill-me 스킬로 결정 트리를 
 
 ## 2. 인터뷰 결과 요약
 
-해소된 결정 사항을 항목별로 정리하여 사용자에게 1회 확인받는다:
+해소된 결정 사항을 항목별로 정리하여 사용자에게 출력한다 (확인 질문은 다음 단계에서 따로 진행):
 
 ```
 ## 인터뷰 결과
@@ -56,27 +56,40 @@ description: TDD 워크플로우 진입점. grill-me 스킬로 결정 트리를 
   - Scenario 2: ...
 **범위 외**:
   - [이번 작업에서 다루지 않을 것]
-
-이 내용으로 스펙 문서를 작성하고 TDD 워크플로우를 시작할까요?
 ```
-
-사용자가 "OK"하면 다음 단계로 자동 진행.
 
 ---
 
-## 3. 다음 단계 자동 연결
+## 3. 다음 단계 결정 — AskUserQuestion
 
-사용자 확인 직후 **즉시** 다음 명령을 실행한다. 멈추지 않는다.
+요약 출력 직후 **AskUserQuestion** 도구로 다음을 묻는다.
 
-```
-/kx:spec-write --skip-confirm --workflow=tdd
-```
-
-이후 흐름은 `spec-write`가 인계받는다:
+### 질문 형식
 
 ```
-spec-write (--workflow=tdd 기본값) → spec-tdd → spec-code-review
+question: "다음 단계를 어떻게 진행할까요?"
+header: "다음 단계"
+multiSelect: false
+options:
+  - label: "전체 워크플로우 진행 (추천)"
+    description: "스펙 문서 작성 후 즉시 spec-tdd → spec-code-review까지 자동 실행"
+  - label: "스펙 문서만 작성"
+    description: "spec.md / plan.md / context.md만 생성하고 종료. TDD/리뷰는 수동으로 따로 호출"
 ```
+
+### 분기 — 사용자 응답 처리
+
+| 사용자 선택 | 실행 명령 |
+|------------|----------|
+| **전체 워크플로우 진행** | `/kx:spec-write --skip-confirm --workflow=tdd` |
+| **스펙 문서만 작성** | `/kx:spec-write --skip-confirm --workflow=tdd --no-chain` |
+
+선택 직후 **즉시 해당 명령을 실행**한다. 추가 확인 없음.
+
+### 이후 흐름
+
+- **전체 진행 선택 시**: `spec-write → spec-tdd → spec-code-review`까지 자동
+- **작성만 선택 시**: `spec-write`가 안내 출력 후 종료. 사용자가 원할 때 `/kx:spec-tdd` 직접 호출 가능
 
 ---
 
