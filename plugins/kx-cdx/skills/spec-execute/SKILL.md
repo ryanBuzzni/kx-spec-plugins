@@ -27,7 +27,7 @@ description: 스펙 문서 작성/갱신 후 개발 에이전트로 구현까지
 
 ## Phase 1A: 스펙 신규 생성
 
-1. 폴더명: `YYYYMMDD-기능명`
+1. 폴더명: `기능명` (날짜를 붙이지 않는다). 작업 전 `specs/` 폴더를 탐색하여 관련 폴더가 있으면 최신화, 없으면 생성
 2. `specs/codebase/index.md`를 읽어 관련 feature 파악
 3. 세션에서 논의된 내용(요구사항, 기술 결정, 제약사항, 변경 파일)을 수집
 4. 다음 세 파일을 즉시 생성 (확인 없이):
@@ -38,7 +38,6 @@ description: 스펙 문서 작성/갱신 후 개발 에이전트로 구현까지
 name: [기능명]
 related_features: [관련 feature 목록]
 status: planned
-created: YYYY-MM-DD
 ---
 
 # [기능명] Specification
@@ -93,7 +92,6 @@ created: YYYY-MM-DD
 
 ## Current Status
 - Phase: Planning
-- Last Updated: YYYY-MM-DD
 
 ## Summary
 - [세션에서 수행한 작업 요약]
@@ -102,7 +100,7 @@ created: YYYY-MM-DD
 - (아직 없음)
 
 ## Session History
-- YYYY-MM-DD: 스펙 문서 생성 via spec-execute
+- 스펙 문서 생성 via spec-execute
 ```
 
 ---
@@ -120,7 +118,7 @@ created: YYYY-MM-DD
 3. **세 파일 모두 갱신**:
    - `spec.md`: 요구사항, acceptance criteria, 기술 제약 업데이트. status 변경 (planned → in_progress → completed)
    - `plan.md`: 완료된 작업 체크, 새 작업 추가, 접근 방식 변경 반영
-   - `context.md`: Current Status 업데이트, Files Changed 추가, Session History에 갱신 이력 추가
+   - `context.md`: Current Status 업데이트, Files Changed 추가, Session History에 `- YYYY-MM-DD: 변경 요약`을 오늘 날짜로 한 줄 추가 (갱신 이력 누적)
 
 ---
 

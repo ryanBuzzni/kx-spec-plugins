@@ -39,7 +39,6 @@ Target Feature: "$ARGUMENTS"
   name: [spec-name]
   related_features: [관련 feature 목록]
   status: planned
-  created: YYYY-MM-DD
   ---
   ```
 

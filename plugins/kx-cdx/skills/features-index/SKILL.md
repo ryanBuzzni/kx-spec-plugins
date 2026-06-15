@@ -172,7 +172,6 @@ YAML frontmatter가 없는 spec.md에 다음 형식 추가:
 name: [spec-name]
 related_features: [관련 도메인/feature 목록]
 status: completed | in_progress | planned
-created: YYYY-MM-DD
 ---
 ```
 

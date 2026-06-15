@@ -161,8 +161,8 @@ Target Feature: "$ARGUMENTS"
 - features의 질문 시 기획서 내용을 참조하여 일부 답변 자동 제안
 
 **2번 선택 시:**
-- `specs/[YYYYMMDD-기능명]/planning-doc.md` 로 저장
-- 폴더가 없으면 생성
+- `specs/[기능명]/planning-doc.md` 로 저장 (폴더명에 날짜를 붙이지 않는다)
+- 기존 관련 폴더가 있으면 최신화, 없으면 생성
 
 **3번 선택 시:**
 - 수정할 부분 확인 후 기획서 업데이트
@@ -178,7 +178,6 @@ Target Feature: "$ARGUMENTS"
 name: [기능명]
 type: planning
 status: draft | ready_for_spec | completed
-created: YYYY-MM-DD
 author: [작성자 - 물어보기]
 ---
 
@@ -202,7 +201,8 @@ author: [작성자 - 물어보기]
 ---
 
 ## 히스토리
-- YYYY-MM-DD: 초안 작성
+- 초안 작성
+<!-- 이후 기획서를 갱신할 때마다 오늘 날짜로 `- YYYY-MM-DD: 변경 요약`을 한 줄씩 누적한다. -->
 ```
 
 ---

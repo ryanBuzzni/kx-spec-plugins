@@ -112,11 +112,10 @@ RED → GREEN → (필요 시) REFACTOR → 다음 시나리오
 
 ## 6. context.md 업데이트
 
-구현 완료 후 `specs/[feature]/context.md`를 갱신한다:
+구현 완료 후 `specs/[feature]/context.md`를 갱신한다. 갱신이므로 `## 갱신 이력`에 오늘 날짜로 한 줄을 추가한다:
 
 ```markdown
 ## 마지막 업데이트
-- 날짜: YYYY-MM-DD
 - 세션 상태: Implementation Complete
 
 ## 현재 진행 상태
@@ -133,6 +132,9 @@ RED → GREEN → (필요 시) REFACTOR → 다음 시나리오
 ## 변경된 파일
 - [구현 파일 목록]
 - [테스트 파일 목록]
+
+## 갱신 이력
+- YYYY-MM-DD: TDD 구현 완료 (오늘 날짜)
 ```
 
 ---

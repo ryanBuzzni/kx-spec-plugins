@@ -17,12 +17,11 @@ disable-model-invocation: true
    - 첫 번째 줄: 기능명
    - 나머지 줄: 작업 내용 설명 (선택사항)
 
-2. 폴더명을 생성하십시오.
-   - 형식: `YYYYMMDD-기능명`
-   - 예시: `20260108-workspace-member-usage`
-   - 오늘 날짜를 사용하십시오.
+2. 폴더명을 정하십시오.
+   - 형식: `기능명` (날짜를 붙이지 않는다)
+   - 예시: `workspace-member-usage`
 
-3. `specs/[폴더명]/` 폴더를 생성하십시오.
+3. **기존 문서 우선 탐색**: `specs/` 폴더를 탐색하여 관련된 폴더가 있으면 해당 폴더를 최신화하고, 없으면 `specs/[폴더명]/` 폴더를 생성하십시오.
 
 ---
 
@@ -98,7 +97,6 @@ git log --oneline -10
 name: [spec-name]
 related_features: [1.5에서 파악한 관련 feature 목록]
 status: completed
-created: YYYY-MM-DD
 ---
 
 # [기능명] Specification
